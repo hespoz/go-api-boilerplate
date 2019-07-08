@@ -1,12 +1,14 @@
 package main
 
 import (
-	"frenco-api/routes"
+	"go-api/routes"
+	"log"
 	"net/http"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/render"
+	"github.com/joho/godotenv"
 )
 
 func Routes() *chi.Mux {
@@ -20,7 +22,7 @@ func Routes() *chi.Mux {
 	)
 
 	router.Route("/v1", func(r chi.Router) {
-		r.Mount("/api/post", routes.Routes())
+		r.Mount("/api/user", routes.Routes())
 	})
 
 	return router
@@ -28,7 +30,12 @@ func Routes() *chi.Mux {
 
 func main() {
 
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
 	router := Routes()
-	http.ListenAndServe(":3000", router)
+	http.ListenAndServe(":3333", router)
 
 }
